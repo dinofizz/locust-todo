@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: {{ .Values.workers.kind }}
+metadata:
+  name: {{ include "locust.worker" . }}
+  labels:
+    {{- include "locust.labels" . | nindent 4 }}
+spec:
+  {{- if eq .Values.workers.kind "Deployment" }}
+  replicas: {{ .Values.workers.replicas }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "locust.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "locust.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "locust.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: LOCUST_MODE_WORKER
+              value: "true"
+            - name: LOCUST_MASTER_NODE_HOST
+              value: {{ template "locust.master-service-comm" . }}
+            - name: LOCUST_MASTER_NODE_PORT
+              value: "{{ .Values.master.commPort }}"
+            - name: LOCUST_HOST
+              value: {{ .Values.master.target }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      nodeSelector:
+        locustRole: worker
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        # this toleration is to have the daemonset runnable on master nodes
+        # remove it if your masters can't run pods
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+    {{- end }}

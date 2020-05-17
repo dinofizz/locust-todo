@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "locust.master-service-web" . }}
+  labels:
+    {{- include "locust.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.master.webPort }}
+      protocol: TCP
+{{/*      name: external-locust-master-port*/}}
+  selector:
+    {{- include "locust.selectorLabels" . | nindent 4 }}
