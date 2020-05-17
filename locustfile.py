@@ -20,7 +20,7 @@ class TodoUser(HttpUser):
 
         @task
         def retrieve_todo(self):
-            self.client.get(f"/todo/{self.user.todo_item['Id']}")
+            self.client.get(f"/todo/{self.user.todo_item['Id']}", name="/todo/[id]")
 
         @task
         def update_todo(self):
@@ -30,8 +30,9 @@ class TodoUser(HttpUser):
                 f"/todo/{self.user.todo_item['Id']}",
                 json=self.user.todo_item,
                 headers=headers,
+                name="/todo/[id]"
             )
 
         @task
         def delete_todo(self):
-            self.client.delete(f"/todo/{self.user.todo_item['Id']}")
+            self.client.delete(f"/todo/{self.user.todo_item['Id']}", name="/todo/[id]")
