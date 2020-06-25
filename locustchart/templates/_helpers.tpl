@@ -7,16 +7,16 @@ Expand the name of the chart.
 {{- printf "%s-%s" .Release.Name "locust" | trunc 63 -}}
 {{- end -}}
 
-{{- define "locust.master-service-web" -}}
-{{- printf "%s-%s" .Release.Name "master-service-web" | trunc 63 -}}
+{{- define "locust.coordinator-service-web" -}}
+{{- printf "%s-%s" .Release.Name "coordinator-service-web" | trunc 63 -}}
 {{- end -}}
 
-{{- define "locust.master-service-comm" -}}
-{{- printf "%s-%s" .Release.Name "master-service-comm" | trunc 63 -}}
+{{- define "locust.coordinator-service-api" -}}
+{{- printf "%s-%s" .Release.Name "coordinator-service-api" | trunc 63 -}}
 {{- end -}}
 
-{{- define "locust.master" -}}
-{{- printf "%s-%s" .Release.Name "master" | trunc 63 -}}
+{{- define "locust.coordinator" -}}
+{{- printf "%s-%s" .Release.Name "coordinator" | trunc 63 -}}
 {{- end -}}
 
 {{- define "locust.worker" -}}

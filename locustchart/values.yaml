@@ -13,13 +13,16 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-master:
+locust:
   target: http://192.168.1.240
-  commPort: 5557
+  locustPort: 5557
   webPort: 8089
 
 workers:
+  # If kind == DaemonSet, 1 worker will run each node.
+  # If kind == Deployment, n replicas will run across the entire namespace (Scheduler controls distribution)
   kind: DaemonSet
+  # replicas only applies if kind == Deployment
   replicas: 6
 
 serviceAccount:
@@ -71,8 +74,7 @@ resources: {}
   #   cpu: 100m
   #   memory: 128Mi
 
-nodeSelector:
-  locustRole: master
+nodeSelector: {}
 
 tolerations: []
 

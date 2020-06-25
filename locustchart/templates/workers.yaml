@@ -32,12 +32,13 @@ spec:
           env:
             - name: LOCUST_MODE_WORKER
               value: "true"
+              # The default configuration uses ClusterIP for worker node services so the coordinator is accessible on localhost.
             - name: LOCUST_MASTER_NODE_HOST
-              value: {{ template "locust.master-service-comm" . }}
+              value: {{ template "locust.coordinator-service-api" . }}
             - name: LOCUST_MASTER_NODE_PORT
-              value: "{{ .Values.master.commPort }}"
+              value: "{{ .Values.locust.locustPort }}"
             - name: LOCUST_HOST
-              value: {{ .Values.master.target }}
+              value: {{ .Values.locust.target }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       nodeSelector:

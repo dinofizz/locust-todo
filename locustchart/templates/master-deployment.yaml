@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "locust.master" . }}
+  name: {{ include "locust.coordinator" . }}
   labels:
     {{- include "locust.labels" . | nindent 4 }}
 spec:
@@ -29,22 +29,24 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: LOCUST_HOST
-              value: {{ .Values.master.target }}
+              value: {{ .Values.locust.target }}
             - name: LOCUST_WEB_PORT
-              value: "{{ .Values.master.webPort }}"
+              value: "{{ .Values.locust.webPort }}"
             - name: LOCUST_MODE_MASTER
               value: "true"
+            - name: LOCUST_MASTER_BIND_PORT
+              value: "{{ .Values.locust.locustPort }}"
           ports:
             - name: web-port
-              containerPort: {{ .Values.master.webPort }}
+              containerPort: {{ .Values.locust.webPort }}
               protocol: TCP
-            - name: master-port
-              containerPort: {{ .Values.master.commPort }}
+            - name: coordinator-port
+              containerPort: {{ .Values.locust.locustPort }}
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       nodeSelector:
-        locustRole: master
+        locustRole: coordinator
     {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
