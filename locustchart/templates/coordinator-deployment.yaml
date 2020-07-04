@@ -40,7 +40,7 @@ spec:
             - name: web-port
               containerPort: {{ .Values.locust.webPort }}
               protocol: TCP
-            - name: coordinator-port
+            - name: locust-port
               containerPort: {{ .Values.locust.locustPort }}
               protocol: TCP
           resources:

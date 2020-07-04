@@ -14,7 +14,7 @@ nameOverride: ""
 fullnameOverride: ""
 
 locust:
-  target: http://192.168.1.240
+  target: http://192.168.0.240
   locustPort: 5557
   webPort: 8089
 
