@@ -3,6 +3,8 @@ Simple Locust load test for my ToDo API.
 
 This repo forms part of the work I am doing to learn Kubernetes by building applications on my Raspberry Pi Cluster.
 
+See my blog post here: https://www.dinofizzotti.com/blog/2020-07-04-raspberry-pi-cluster-part-3-running-load-tests-with-kubernetes-and-locust/
+
 *Note: This repo is primarily for my own interests and learning. Feel free to read/copy the code, but I won't be supporting or maintaining anything here other than for my own benefit.*
 
 ## Locust
